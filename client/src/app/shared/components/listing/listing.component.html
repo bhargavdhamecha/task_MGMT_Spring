@@ -1,0 +1,46 @@
+<div class="card">
+    <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+    <ng-container *ngIf="!loading && !totalRecords">
+        <div class="card empty-container">
+            <img [src]="noRecordImagePath" alt="no-record">
+            <h3>{{noRecordText}}</h3>
+        </div>
+    </ng-container>
+    <p-table
+        [value]="records"
+        [lazy]="true"
+        (onLazyLoad)="init($event)"
+        dataKey="id"
+        [tableStyle]="{ 'min-width': '75rem' }"
+        [selection]="selectedCustomers"
+        (selectionChange)="onSelectionChange($event)"
+        [selectAll]="selectAll"
+        (selectAllChange)="onSelectAllChange($event)"
+        [paginator]="totalRecords > 0 ? true: false "
+        [rows]="20"
+        [totalRecords]="totalRecords"
+        [loading]="loading"
+        [rowsPerPageOptions]="[20, 50, 100]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem">
+                    <p-tableCheckbox value="all"></p-tableCheckbox>
+                    </th>
+                    <th *ngFor="let item of columnHeaders;" [pSortableColumn]="item">
+                        {{ item }}<p-sortIcon [field]="item"></p-sortIcon>
+                      </th>
+                </tr>
+                
+            </ng-template>
+    
+            <ng-template pTemplate="body" let-record>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="record"></p-tableCheckbox>
+                    </td>
+                    <td *ngFor="let key of columnHeaders">{{ record[key] }}</td>
+                </tr>
+            </ng-template>
+    </p-table>
+</div>

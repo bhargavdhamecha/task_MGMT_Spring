@@ -1,0 +1,8 @@
+<app-listing #listing [headerTemplate]="template"  [fetchData]="loadAllProjects.bind(this)" noRecordImagePath="/assets/images/icons/no-documents.svg" [noRecordText]="'no records are available' | titlecase"></app-listing> 
+<app-create-project></app-create-project>
+<ng-template #template>
+    <!-- Your modal content goes here -->
+    <div class="flex justify-content-end">
+        <p-button icon="pi pi-plus" (click)="showCreateNewProjectModal()" />
+    </div>
+</ng-template>

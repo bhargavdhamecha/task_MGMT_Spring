@@ -1,0 +1,2 @@
+note
+Lazy-loaded Modules: If you have feature modules that are lazy-loaded, you might need to import the SharedModule within those feature modules as well. This is because lazy-loaded modules have their own independent scope, and they don't inherit imports from the AppModule

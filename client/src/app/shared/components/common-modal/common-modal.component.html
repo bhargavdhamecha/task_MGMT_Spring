@@ -1,0 +1,17 @@
+<p-dialog [header]="header" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="modal-content">
+        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button *ngIf="cancelLabel" [label]="cancelLabel | titlecase" severity="secondary" (click)="onCancel()" class="form-button" />
+        <p-button *ngIf="okLabel" [label]="okLabel | titlecase" (click)="onOk()" class="form-button"/>
+    </div>
+</p-dialog>
+
+<!-- <p-dialog [(visible)]="visible" [modal]="true" [header]="header">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+    <p-footer>
+      <button pButton type="button" label="Cancel" (click)="onCancel()"></button>
+      <button pButton type="button" label="OK" (click)="onOk()"></button>
+    </p-footer>
+  </p-dialog> -->

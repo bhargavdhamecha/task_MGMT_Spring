@@ -1,0 +1,22 @@
+.container {
+    border-radius: 56px;
+    padding: 0.3rem;
+    background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);
+
+    .side-icon {
+        &.correct {
+            color: greenyellow;
+        }
+        &.incorrect {
+            color: red;
+        }
+    }
+}
+
+.red-text {
+    color: red;
+}
+
+.d-none {
+    display: none;
+}
