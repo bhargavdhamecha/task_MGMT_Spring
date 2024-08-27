@@ -1,10 +1,10 @@
 package com.task.management.security.controller;
 
-import com.task.management.constant.ApiConstant;
+import com.task.management.shared.constant.ApiConstant;
 import com.task.management.dto.LoginRequestDTO;
-import com.task.management.dto.ResponseStructure;
 import com.task.management.dto.SignupRequestDTO;
 import com.task.management.security.service.AuthService;
+import com.task.management.shared.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,27 +22,48 @@ public class AuthController {
         this.authService = authService;
     }
 
+    /**
+     * API for check username available while creating a new user
+     * @param usernameBody map<string, object>
+     * @return ApiResponse
+     */
     @PostMapping(value = ApiConstant.CHECK_USERNAME)
-    public ResponseStructure<Object> getRequest(@RequestBody Map<String, Object> usernameBody) {
+    public ApiResponse<Object> getRequest(@RequestBody Map<String, Object> usernameBody) {
         String name = (String) usernameBody.get("username");
         if (!name.isEmpty()) {
             return authService.checkUserName(name);
         }
-        return new ResponseStructure<>(HttpStatus.BAD_REQUEST.value(), "bad request!", null);
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "bad request!", null);
     }
 
+    /**
+     * API for user login
+     * @param loginBody LoginRequestDTO
+     * @param response HttpServletResponse
+     * @return ApiResponse
+     */
     @PostMapping(value = ApiConstant.LOGIN)
-    public ResponseStructure<Object> login(@RequestBody LoginRequestDTO loginBody, HttpServletResponse response){
+    public ApiResponse<Object> login(@RequestBody LoginRequestDTO loginBody, HttpServletResponse response){
         return authService.authenticate(loginBody,response);
     }
 
+    /**
+     * API for creating new user
+     * @param signupBody SignupRequestDTO
+     * @return ApiResponse
+     */
     @PostMapping(value = ApiConstant.SIGNUP)
-    public ResponseStructure<Object> signUp(@RequestBody SignupRequestDTO signupBody){
-        return authService.signUp(signupBody);
+    public ApiResponse<Object> signUp(@RequestBody SignupRequestDTO signupBody, HttpServletResponse response){
+        return authService.signUp(signupBody, response);
     }
 
+    /**
+     * API for logout, clear the session
+     * @param response HttpServletResponse
+     * @return ApiResponse
+     */
     @PostMapping(value = ApiConstant.LOGOUT)
-    public ResponseStructure<Object> logout(HttpServletResponse response){
+    public ApiResponse<Object> logout(HttpServletResponse response){
         return authService.logout(response);
     }
 }

@@ -1,8 +1,8 @@
 package com.task.management.security.service;
 
-import com.task.management.model.UserPrincipal;
-import com.task.management.model.User;
-import com.task.management.repository.UserRepository;
+import com.task.management.users.model.UserPrincipal;
+import com.task.management.users.model.User;
+import com.task.management.users.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

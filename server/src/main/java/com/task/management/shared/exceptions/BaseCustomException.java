@@ -1,4 +1,4 @@
-package com.task.management.exceptions;
+package com.task.management.shared.exceptions;
 
 import lombok.Getter;
 import lombok.Setter;
