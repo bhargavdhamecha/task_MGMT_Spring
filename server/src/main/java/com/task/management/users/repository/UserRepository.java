@@ -1,6 +1,6 @@
-package com.task.management.repository;
+package com.task.management.users.repository;
 
-import com.task.management.model.User;
+import com.task.management.users.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
