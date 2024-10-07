@@ -26,7 +26,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Work',
                 items: [
                     { label: 'Your Work', routerLink: ['/work'] },
-                    { label: 'Porjects', routerLink: ['/projects'] },
+                    { label: 'Projects', routerLink: ['/projects'] },
                     { label: 'Teams', routerLink: ['/team'] },
                     { label: 'Filters', routerLink: ['/filters'] }
                 ]

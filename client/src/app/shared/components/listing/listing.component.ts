@@ -85,9 +85,9 @@ export class ListingComponent {
     }
   }
 
-
+  // TODO: check
   showCreateNewProjectModal() {
-    this.commonModal.showDialog();
+    // this.commonModal.showDialog();
   }
 
   refreshRecords(since:string){

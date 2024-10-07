@@ -9,6 +9,9 @@ export enum API_CONSTANT{
     DASH = '/common/dash',
 
     // project
-    CREATE_PROJECT = '/project/createProject',
+    CREATE_PROJECT = '/project/create-project',
     GET_ALL_PROJECTS = '/project/getAll',
+
+    // organization
+    CREATE_ORGANIZATION = '/org/register-org'
 }

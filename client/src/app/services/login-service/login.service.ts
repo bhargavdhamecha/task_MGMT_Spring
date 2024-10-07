@@ -31,5 +31,9 @@ export class LoginService {
   public logout(){
     return this._util.handleRequest('POST', API_CONSTANT.LOGOUT);
   }
+
+  public createOrg(data: object): Observable<HttpResponse<any>>{
+    return this._util.handleRequest('POST', API_CONSTANT.CREATE_ORGANIZATION, {body: data})
+  }
   
 }

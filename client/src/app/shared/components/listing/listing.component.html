@@ -21,6 +21,7 @@
         [totalRecords]="totalRecords"
         [loading]="loading"
         [rowsPerPageOptions]="[20, 50, 100]"
+        [className]="totalRecords == 0 ? 'd-none': ''"
     >
         <ng-template pTemplate="header">
             <tr>

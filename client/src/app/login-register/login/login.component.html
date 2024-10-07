@@ -76,7 +76,7 @@
                                         <span class="p-input-icon-right">
                                             <i class="pi pi-spin pi-spinner side-icon" *ngIf="isXhrInProgress"></i>
                                             <i class="pi pi-verified side-icon correct" *ngIf="isUserNameAvailable && !isXhrInProgress"></i>
-                                            <i class="pi pi-times-circle side-icon incorrect" *ngIf="isXhrCompleted && !isUserNameAvailable && !isXhrInProgress"></i>
+                                            <i class="pi pi-times-circle side-icon incorrect" ngClass="ng-untouched" *ngIf="isXhrCompleted && !isUserNameAvailable && !isXhrInProgress"></i>
                                         </span>
                                     </p-inputGroup>
                                 </span>
@@ -142,4 +142,16 @@
             </form>
         </div>
     </div>
+
+    <!-- <ng-template> -->
+        <app-common-modal #modal [modalConfig]="modalConfig">
+            <!--  body of the modal  -->
+            <div #content content>
+                <span class="p-text-secondary block mb-5"> <i class="pi pi-exclamation-triangle" style="font-size: large;"></i> Organization not Found.</span>
+                <p>
+                    Provided Organization not found, would you like to create a new one? 
+                </p>
+            </div>
+        </app-common-modal>
+    <!-- </ng-template> -->
     <p-toast></p-toast>

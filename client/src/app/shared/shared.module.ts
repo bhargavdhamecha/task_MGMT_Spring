@@ -8,6 +8,8 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AppMenuComponent } from './components/menu/menu.component';
 import { AppMenuitemComponent } from './components/menu/app.menu-item.component';
+import { CommonModalComponent } from './components/common-modal/common-modal.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 const SHARED_MODULES = [
   CommonModule,
@@ -18,11 +20,11 @@ const SHARED_MODULES = [
 ];
 
 @NgModule({
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService, ConfirmationService, DialogService],
   declarations: [ 
-    AppMenuitemComponent,TopBarComponent, LayoutComponent, SidebarComponent, AppMenuComponent
+    AppMenuitemComponent,TopBarComponent, LayoutComponent, SidebarComponent, AppMenuComponent, CommonModalComponent
   ],
   imports: [ ...SHARED_MODULES],
-  exports: [ ...SHARED_MODULES]
+  exports: [ ...SHARED_MODULES, CommonModalComponent]
 })
 export class SharedModule { }

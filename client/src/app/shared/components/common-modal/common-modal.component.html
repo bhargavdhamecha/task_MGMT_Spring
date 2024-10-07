@@ -1,17 +1,26 @@
-<p-dialog [header]="header" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-    <div class="modal-content">
-        <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-    </div>
-    <div class="flex justify-content-end gap-2">
-        <p-button *ngIf="cancelLabel" [label]="cancelLabel | titlecase" severity="secondary" (click)="onCancel()" class="form-button" />
-        <p-button *ngIf="okLabel" [label]="okLabel | titlecase" (click)="onOk()" class="form-button"/>
-    </div>
-</p-dialog>
+<!-- <div #dialogContent> -->
+<p-dialog [modal]="true" [header]="modalConfig.modalHeader"  title="123" [closable]="!!modalConfig.closable" [dismissableMask]="true" [closeOnEscape]="true" [responsive]="!!modalConfig.response"
+[draggable]="!!modalConfig.draggable" [resizable]="!!modalConfig.resizable" 
+[(visible)]="isVisible"
+  [style]="{'width': '50%'}">
 
-<!-- <p-dialog [(visible)]="visible" [modal]="true" [header]="header">
-    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
-    <p-footer>
-      <button pButton type="button" label="Cancel" (click)="onCancel()"></button>
-      <button pButton type="button" label="OK" (click)="onOk()"></button>
-    </p-footer>
-  </p-dialog> -->
+  <ng-content></ng-content>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2">
+      <p-button  *ngIf="modalConfig.hideDismissButton != undefined || !modalConfig.hideDismissButton" [label]="modalConfig.dismissButtonLabel" severity="secondary" />
+      <p-button *ngIf="modalConfig.hideCloseButton != undefined || !modalConfig.hideCloseButton" [label]="modalConfig.closeButtonLabel" (onClick)="close()" />
+  </div>
+    <!-- <button type="button" class="btn btn-outline-secondary" (click)="dismiss()"
+      *ngIf="modalConfig.hideDismissButton != undefined || !modalConfig.hideDismissButton" pButton
+      [disabled]="modalConfig.disableDismissButton !== undefined && modalConfig.disableDismissButton()">
+      {{ modalConfig.dismissButtonLabel }}
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="close()" pButton
+      *ngIf="modalConfig.hideCloseButton != undefined || !modalConfig.hideCloseButton"
+      [disabled]="modalConfig.disableCloseButton !== undefined && modalConfig.disableCloseButton()">
+      {{ modalConfig.closeButtonLabel }}
+    </button> -->
+  </ng-template>
+</p-dialog>
+<!-- </div> -->

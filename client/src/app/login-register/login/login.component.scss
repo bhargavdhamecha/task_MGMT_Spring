@@ -14,9 +14,11 @@
 }
 
 .red-text {
+    display: block;
     color: red;
+    visibility: visible;
 }
 
 .d-none {
-    display: none;
+    visibility: hidden;
 }
