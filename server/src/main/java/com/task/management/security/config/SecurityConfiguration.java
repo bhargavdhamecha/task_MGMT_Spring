@@ -1,5 +1,6 @@
 package com.task.management.security.config;
 
+import com.task.management.shared.constant.ApiConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +42,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests ->{
                     authorizeHttpRequests.requestMatchers("/auth/**").permitAll();
+                    authorizeHttpRequests.requestMatchers("/org/**").permitAll();
                     authorizeHttpRequests.anyRequest().authenticated();
                 })
 //                .formLogin(Customizer.withDefaults())
@@ -57,8 +59,8 @@ public class SecurityConfiguration {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("authorization", "content-type", "x-auth-token"));
 //        configuration.set AllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("x-auth-token"));
 //        configuration.setExposedHeaders(List.of("*"));

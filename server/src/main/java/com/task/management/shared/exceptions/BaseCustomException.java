@@ -7,7 +7,8 @@ import lombok.Setter;
 @Setter
 public class BaseCustomException extends RuntimeException{
 
-    private boolean sendResponse;
+    private static final long serialVersionUID = 5878784447971587131L;
+	private boolean sendResponse;
 
     public BaseCustomException(String message, boolean sendResponse){
         super(message);

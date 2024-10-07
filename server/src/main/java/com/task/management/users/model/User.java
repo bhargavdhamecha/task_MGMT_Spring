@@ -11,9 +11,10 @@ import java.util.Date;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(unique = true)
-    private Integer userId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "user_sequence_generator")
+    @SequenceGenerator(name = "user_sequence_generator", sequenceName="user_sequence", allocationSize = 1)
+    @Column(unique = true, nullable = false)
+    private long userId;
 
     @Column(nullable = false, unique = true)
     private String userName;
@@ -21,9 +22,8 @@ public class User {
     @Column(nullable = false)
     private String firstName;
 
-    @Column(nullable = true)
+    @Column()
     private String lastName;
-
 
     @Column(nullable = false, unique = true)
     private String userEmail;
@@ -31,9 +31,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "org_id", nullable = false)
+    private Organization organization;
+
     @CreationTimestamp
     @Column(updatable = false)
     private Date createdAt;
-
 
 }

@@ -1,16 +1,22 @@
-package com.task.management.security.controller;
+package com.task.management.users.controller;
 
-import com.task.management.shared.constant.ApiConstant;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.task.management.dto.LoginRequestDTO;
 import com.task.management.dto.SignupRequestDTO;
 import com.task.management.security.service.AuthService;
+import com.task.management.shared.constant.ApiConstant;
 import com.task.management.shared.dto.ApiResponse;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = ApiConstant.AUTH_CONTROLLER, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,7 +29,7 @@ public class AuthController {
     }
 
     /**
-     * API for check username available while creating a new user
+     * API for check user-name available while creating a new user
      * @param usernameBody map<string, object>
      * @return ApiResponse
      */
@@ -53,7 +59,7 @@ public class AuthController {
      * @return ApiResponse
      */
     @PostMapping(value = ApiConstant.SIGNUP)
-    public ApiResponse<Object> signUp(@RequestBody SignupRequestDTO signupBody, HttpServletResponse response){
+    public ResponseEntity<ApiResponse<Object>> signUp(@RequestBody SignupRequestDTO signupBody, HttpServletResponse response){
         return authService.signUp(signupBody, response);
     }
 

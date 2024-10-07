@@ -18,11 +18,16 @@ public class TaskmgmtApplication implements CommandLineRunner {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-//	TODO: write code throw error of database is not available to connect
 	public static void main(String[] args) {
 		SpringApplication.run(TaskmgmtApplication.class, args);
 	}
 
+	/**
+	 *  method to throw error when database is not available to connect
+	 *
+	 * @param args String
+	 * @throws Exception e
+	 */
 	public void run(String... args) throws Exception{
 		try {
 			if (jdbcTemplate == null || jdbcTemplate.getDataSource() == null ||

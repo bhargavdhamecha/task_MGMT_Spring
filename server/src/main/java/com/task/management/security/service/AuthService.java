@@ -6,13 +6,17 @@ import com.task.management.shared.constant.AppConstant;
 import com.task.management.shared.dto.ApiResponse;
 import com.task.management.shared.exceptions.UserEmailAlreadyExistsException;
 import com.task.management.shared.exceptions.UserNameAlreadyExistsException;
+import com.task.management.shared.utils.StringUtils;
+import com.task.management.users.model.Organization;
 import com.task.management.users.model.User;
 import com.task.management.users.repository.UserRepository;
 import com.task.management.security.jwt.JwtUtils;
+import com.task.management.users.service.OrganizationService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,13 +37,15 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
     private final CustomUserDetailService customUserDetailService;
     private final JwtUtils jwtUtils;
+    private final OrganizationService organizationService;
 
     @Autowired
-    public AuthService(UserRepository userRepository, AuthenticationManager authenticationManager, CustomUserDetailService customUserDetailService, JwtUtils jwtUtils) {
+    public AuthService(UserRepository userRepository, AuthenticationManager authenticationManager, CustomUserDetailService customUserDetailService, JwtUtils jwtUtils, OrganizationService organizationService) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.customUserDetailService = customUserDetailService;
         this.jwtUtils = jwtUtils;
+        this.organizationService = organizationService;
     }
 
     /**
@@ -62,15 +68,21 @@ public class AuthService {
      * @throws UserNameAlreadyExistsException  exception
      * @throws UserEmailAlreadyExistsException exception
      */
-    public ApiResponse<Object> signUp(SignupRequestDTO signUpObj, HttpServletResponse response) throws UserNameAlreadyExistsException, UserEmailAlreadyExistsException {
+    public ResponseEntity<ApiResponse<Object>> signUp(SignupRequestDTO signUpObj, HttpServletResponse response) throws UserNameAlreadyExistsException, UserEmailAlreadyExistsException {
         if (!checkUserNameExists(signUpObj.getUserName())) {
-            return new ApiResponse<>(HttpStatus.CONFLICT.value(), "User already Exists with given UserName!", null);
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CONFLICT.value(), "User already Exists with given UserName!", null), HttpStatus.CONFLICT);
         }
         if (checkEmailExists(signUpObj.getUserEmail())) {
-            return new ApiResponse<>(HttpStatus.CONFLICT.value(), "User already exists with given email address", null);
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CONFLICT.value(), "User already exists with given email address", null), HttpStatus.CONFLICT);
         }
 
-        User user = encodePassword(signUpObj);
+        //   check for the org, if org doesn't exist then ask to create
+        Organization org =organizationService.getOrgEntity(StringUtils.getDomainNameFromEmail(signUpObj.getUserEmail()));
+        if ( org == null) {
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CONTINUE.value(), "create organization.", HttpStatus.CONTINUE.toString()), HttpStatus.OK);
+        }
+
+        User user = encodePassword(signUpObj, org);
         try {
             userRepository.save(user);
             long expireTimeOut = 3600000;
@@ -84,9 +96,9 @@ public class AuthService {
                     .sameSite(AppConstant.SAME_SITE_COOKIE)
                     .build();
             response.addHeader(AppConstant.SET_HEADER, cookie.toString());
-            return new ApiResponse<>(HttpStatus.CREATED.value(), "User created successfully!", null);
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CREATED.value(), "User created successfully!", null), HttpStatus.CREATED);
         } catch (UserEmailAlreadyExistsException emailException) {
-            return new ApiResponse<>(HttpStatus.CONFLICT.value(), "User already exists with given email address.", null);
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.CONFLICT.value(), "User already exists with given email address.", null), HttpStatus.CONFLICT);
         }
     }
 
@@ -146,13 +158,14 @@ public class AuthService {
      * @param signupDTO SignupRequestDTO
      * @return User entity
      */
-    private User encodePassword(SignupRequestDTO signupDTO) {
+    private User encodePassword(SignupRequestDTO signupDTO, Organization organization) {
         User user = new User();
         user.setUserName(signupDTO.getUserName());
         user.setFirstName(signupDTO.getFirstName());
         user.setLastName(signupDTO.getLastName());
         user.setUserEmail(signupDTO.getUserEmail());
         user.setPassword(passwordEncoder.encode(signupDTO.getPassword()));
+        user.setOrganization(organization);
         return user;
     }
 
