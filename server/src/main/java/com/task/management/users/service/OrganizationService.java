@@ -30,7 +30,6 @@ public class OrganizationService {
 
     public ApiResponse<Object> registerOrgForSignUp(SignupRequestDTO requestDTO, HttpServletResponse response){
         Organization org = createOrg(new CreateOrgReqDTO(StringUtils.getDomainNameFromEmail(requestDTO.getUserEmail()),""));
-        requestDTO.setOrgId(org.getOrgId());
         authService.signUp(requestDTO, response);
         return new ApiResponse<>(HttpStatus.CREATED.value(), "Organization created successfully", entityDTOMapper.toOrgDTO(org));
     }
